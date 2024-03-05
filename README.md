@@ -1,1 +1,1 @@
-"# elegant-8puzzle-solution" 
+# elegant-8puzzle-solution
