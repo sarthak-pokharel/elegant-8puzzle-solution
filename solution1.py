@@ -52,27 +52,27 @@ class Node:
         
         onepos = Game.getrowcolumn(self.state.index('1'))
         distance += abs(0-onepos[0]) + abs(0-onepos[1])
-
+        
         twopos = Game.getrowcolumn(self.state.index('2'))
-        distance += abs(0-onepos[0]) + abs(1-twopos[1])
-
+        distance += abs(0-twopos[0]) + abs(1-twopos[1])
+        
         threepos = Game.getrowcolumn(self.state.index('3'))
-        distance += abs(0-onepos[0]) + abs(2-threepos[1])
-
+        distance += abs(0-threepos[0]) + abs(2-threepos[1])
+        
         fourpos = Game.getrowcolumn(self.state.index('4'))
-        distance += abs(1-onepos[0]) + abs(0-fourpos[1])
-
+        distance += abs(1-fourpos[0]) + abs(0-fourpos[1])
+        
         fivepos = Game.getrowcolumn(self.state.index('5'))
-        distance += abs(1-onepos[0]) + abs(1-fivepos[1])
+        distance += abs(1-fivepos[0]) + abs(1-fivepos[1])
 
         sizpos = Game.getrowcolumn(self.state.index('6'))
-        distance += abs(1-onepos[0]) + abs(2-sizpos[1])
+        distance += abs(1-sizpos[0]) + abs(2-sizpos[1])
 
         sevenpos = Game.getrowcolumn(self.state.index('7'))
-        distance += abs(2-onepos[0]) + abs(0-sevenpos[1])
+        distance += abs(2-sevenpos[0]) + abs(0-sevenpos[1])
 
         eightpos = Game.getrowcolumn(self.state.index('8'))
-        distance += abs(2-onepos[0]) + abs(1-eightpos[1])
+        distance += abs(2-eightpos[0]) + abs(1-eightpos[1])
 
         return distance
     def expand(self):
@@ -124,6 +124,6 @@ def solve(znode:Node, path=[]):
 
 
 
-g = Game("123456078")
-# g = Game("123406758")
+# g = Game("123056478")
+g = Game("123406758")
 solve(znode=Node(g.state))
