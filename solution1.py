@@ -19,6 +19,7 @@ class Node:
         self.parent = parent
         self.cost = cost
         self.depth = depth
+        self.solved = False
     def getPossibleMovesStates(self):
         moves = []
         zeroIndex = self.state.find("0")
@@ -83,6 +84,7 @@ class Node:
             enode = Node(ac[1], depth=self.depth+1, cost=self.cost+1)
             result.append({
                 "node":enode,
+                "state": ac[1],
                 'heuristic': heuristic(enode),
                 "parent":self,
                 "for_move": ac[0]
@@ -97,26 +99,44 @@ class Node:
         print(self.state[3:6])
         print(self.state[6:9])
         print()
+    def backPropSolved(self):
+        self.solved = True
+        if self.parent:
+            self.parent.backPropSovled()
 
+
+MAX_DEPTH = 40
 
 def heuristic(node:Node):
     return node.depth+node.getManhattan()
-def solve(znode:Node, path=[]):
-    # print(znode)
+
+def solve(znode:Node, path=[], solved=False):
+    
+    # print({"state":znode.state, 'h':heuristic(znode)})
+    if znode.solved:
+        return
     if znode.isComplete():
         for p in path:
-            p.printboard()
+            Node(p).printboard()
         znode.printboard()
-        return print("Puzzle solved")
+        znode.backPropSolved()
+        print("Puzzle solved", "num of moves: ", len(path)+1)
+        exit()
+        return
+    if znode.depth >= MAX_DEPTH:
+        # print("MAX DEPTH")
+        return 
+    
     
     expandibleNodes = znode.expand()
     minmh = min([x['heuristic'] for x in expandibleNodes])
-    min_nodes = list(filter(lambda x: x['heuristic']==minmh, expandibleNodes))
+    min_nodes = list(filter(lambda x: (x['state'] not in path), expandibleNodes))
     min_nodes = [x['node'] for x in min_nodes]
-
+    # print()
+    # print([heuristic(x) for x in min_nodes], [x['heuristic'] for x in expandibleNodes], minmh)
     for newnode in min_nodes:
-        # print(newnode.getManhattan(), newnode.state)
-        solve(newnode, path+[znode])
+        # print(heuristic(newnode), newnode.state, dict(depth=newnode.depth))
+        solve(newnode, path+[znode.state])
     pass
 
     
@@ -125,5 +145,5 @@ def solve(znode:Node, path=[]):
 
 
 # g = Game("123056478")
-g = Game("123406758")
+g = Game("720153486")
 solve(znode=Node(g.state))
